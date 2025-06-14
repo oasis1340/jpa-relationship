@@ -1,0 +1,37 @@
+#server
+server:
+  port: 10000
+
+#jdbc
+spring:
+  datasource:
+    driver-class-name: oracle.jdbc.OracleDriver
+    url: jdbc:oracle:thin:@localhost:1521:XE
+    username: hr
+    password: 1234
+
+  #jpa
+  jpa:
+    database-platform: org.hibernate.dialect.OracleDialect
+    # ddl auto
+    hibernate:
+      ddl-auto: update #Entity DB와 비교 후 수정사항을 반영
+#      ddl-auto: create # DROP 후 CREATE
+#      ddl-auto: create-drop # DROP 후 CREATE 후 DROP, DML을 사용하지 않으면 DROP 되지 않음.
+#      ddl-auto: validate # Entity DB와 비교 후 다르면 예외 발생
+
+    #jpa format
+    properties:
+      hibernate:
+        format_sql: true
+        show-sql: false
+
+  #log
+  output:
+    ansi:
+      enabled: never
+
+logging:
+  level:
+    com.p6spy: DEBUG
+    com.app.basic.config.p6spy: DEBUG
