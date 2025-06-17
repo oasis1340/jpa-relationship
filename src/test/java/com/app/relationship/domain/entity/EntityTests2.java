@@ -10,17 +10,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @SpringBootTest
-@Slf4j
-@Transactional @Commit
+@Slf4j @Transactional @Commit
 class EntityTests2 {
     @PersistenceContext
     EntityManager entityManager;
 
     @Test
-    public void productInsertTest() {
+    void productInsertTest(){
         Member member = new Member();
         member.setMemberName("홍길동");
         member.setMemberAddress("서울시 강남구 역삼동");
@@ -35,7 +32,7 @@ class EntityTests2 {
     }
 
     @Test
-    public void orderSaveTest() {
+    void orderSaveTest(){
         Member member = new Member();
         member.setMemberName("홍길동");
         member.setMemberAddress("서울시 강남구 역삼동");
@@ -56,10 +53,14 @@ class EntityTests2 {
     }
 
     @Test
-    public void orderFindTest() {
+    public void orderFindTest(){
         String query = "SELECT m FROM Member m JOIN m.orders o WHERE m.id = :id";
-        List<Member> member = entityManager.createQuery(query, Member.class).setParameter("id", 52L).getResultList();
-        log.info("member: {}", member.toString());
+        List<Member> member = entityManager.createQuery(query, Member.class).setParameter("id", 1002L).getResultList();
+
+//        그래프 탐색
+        List<Product> orderedProductList = member.stream().flatMap((m) -> m.getOrders().stream()).map(Order::getProduct).toList();
+        log.info("주문 된 상품: {}", orderedProductList.toString());
     }
+
 
 }
